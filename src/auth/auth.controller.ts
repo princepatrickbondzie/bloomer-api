@@ -1,10 +1,4 @@
-import {
-  Controller,
-  Post,
-  Body,
-  Request,
-  UseGuards,
-} from '@nestjs/common';
+import { Controller, Post, Body, Request, UseGuards } from '@nestjs/common';
 import { Type } from '../shared/utility/methods';
 import { User } from '../shared/schema/user';
 import { userType } from '../shared/utility/types';
@@ -35,7 +29,7 @@ export class AuthController {
   }
 
   @Post('admin')
-  @Type([userType.SUPER_ADMIN, userType.ADMIN])
+  @Type([userType.SuperAdmin, userType.Admin])
   @UseGuards(UserAuthGuard, TypeGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'create new user' })

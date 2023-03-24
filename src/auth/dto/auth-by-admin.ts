@@ -1,4 +1,10 @@
-import { IsNotEmpty, IsString, IsIn, IsEmail, IsDateString } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsString,
+  IsIn,
+  IsEmail,
+  IsDateString,
+} from 'class-validator';
 import { userType } from '../../shared/utility/types';
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -31,17 +37,17 @@ export class AuthByAdminDto {
 
   @IsString()
   @IsIn([
-    userType.ADMIN,
-    userType.CUSTOMER_SERVICE,
-    userType.SUPER_ADMIN,
-    userType.CLIENT,
+    userType.Admin,
+    userType.Client,
+    userType.SuperAdmin,
+    userType.CustomerService,
   ])
   @ApiProperty({
     enum: [
-      userType.ADMIN,
-      userType.CUSTOMER_SERVICE,
-      userType.SUPER_ADMIN,
-      userType.CLIENT,
+      userType.Admin,
+      userType.Client,
+      userType.SuperAdmin,
+      userType.CustomerService,
     ],
   })
   type: string;

@@ -10,6 +10,8 @@ import { AuthModule } from './auth/auth.module';
 import { BusinessModule } from './business/business.module';
 import { ServicesModule } from './services/services.module';
 import { AppointmentsModule } from './appointments/appointments.module';
+import { CategoryModule } from './category/category.module';
+import { UploadModule } from './upload/upload.module';
 
 @Module({
   imports: [
@@ -20,7 +22,9 @@ import { AppointmentsModule } from './appointments/appointments.module';
     AddressModule,
     BusinessModule,
     ServicesModule,
+    CategoryModule,
     AppointmentsModule,
+    UploadModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -24,7 +24,7 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
-  @Type([userType.SUPER_ADMIN, userType.ADMIN, userType.CUSTOMER_SERVICE])
+  @Type([userType.SuperAdmin, userType.Admin, userType.CustomerService])
   @UseGuards(UserAuthGuard, TypeGuard)
   @ApiOperation({ summary: 'get all user accounts (as type)' })
   async getAllUserAccounts(): Promise<User[]> {
@@ -32,7 +32,7 @@ export class UserController {
   }
 
   @Get('accounts')
-  @Type([userType.SUPER_ADMIN, userType.ADMIN])
+  @Type([userType.SuperAdmin, userType.Admin])
   @UseGuards(UserAuthGuard, TypeGuard)
   @ApiOperation({ summary: 'get all accounts' })
   async getAllAccounts(): Promise<User[]> {
@@ -57,7 +57,7 @@ export class UserController {
   }
 
   @Delete(':id')
-  // @Type([userType.SUPER_ADMIN, userType.ADMIN])
+  // @Type([userType.SuperAdmin, userType.Admin])
   // @UseGuards(UserAuthGuard, TypeGuard)
   @ApiOperation({ summary: 'delete a single user account' })
   async deleteUser(@Param('id') id: string): Promise<void> {

@@ -10,15 +10,17 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { TypeGuard } from '../guards/type.guard';
 import { Type } from '../shared/utility/methods';
-import { userType } from '../shared/utility/types';
-import { UserAuthGuard } from '../guards/auth-user.guard';
 import { User } from '../shared/schema/user';
+import { Business } from '../shared/schema/business';
+import { userType } from '../shared/utility/types';
+import { AppGuard } from '../guards/app.guard';
+import { TypeGuard } from '../guards/type.guard';
+import { UserAuthGuard } from '../guards/auth-user.guard';
 import { BusinessService } from './business.service';
 import { CreateBusinessDto } from './dto/create-business.dto';
 import { UpdateBusinessDto } from './dto/update-business.dto';
-import { Business } from '../shared/schema/business';
+import { UpdateSchedules } from './dto/update-schedules.dto';
 
 @Controller('business')
 @ApiTags('Business')
@@ -27,6 +29,12 @@ export class BusinessController {
   constructor(private readonly businessService: BusinessService) {}
 
   @Post()
+  @Type([
+    userType.Client,
+    userType.SuperAdmin,
+    userType.Admin,
+    userType.CustomerService,
+  ])
   @UseGuards(UserAuthGuard)
   @ApiOperation({ summary: 'create new Business' })
   async createBusiness(
@@ -38,6 +46,7 @@ export class BusinessController {
   }
 
   @Get('user/:id')
+  // @Type([userType.Business])
   @UseGuards(UserAuthGuard)
   @ApiOperation({ summary: 'get business by user' })
   async getBusinessByUser(
@@ -49,24 +58,32 @@ export class BusinessController {
   }
 
   @Get(':id')
-  @Type([userType.SUPER_ADMIN, userType.ADMIN, userType.CUSTOMER_SERVICE])
-  @UseGuards(UserAuthGuard, TypeGuard)
+  @UseGuards(AppGuard)
   @ApiOperation({ summary: 'get single business' })
   async getOneBusiness(@Param('id') id: string): Promise<Business> {
     return await this.businessService.getOneBusiness(id);
   }
 
   @Get()
-  @Type([userType.SUPER_ADMIN, userType.ADMIN, userType.CUSTOMER_SERVICE])
-  @UseGuards(UserAuthGuard, TypeGuard)
+  @UseGuards(AppGuard)
   @ApiOperation({ summary: 'get all businesses' })
   async getAllBusinesses(): Promise<Business[]> {
     return await this.businessService.getAllBusinesses();
   }
 
+  @Get(':category')
+  @UseGuards(AppGuard)
+  @ApiOperation({ summary: 'get business by category' })
+  async getBusinessByCategory(
+    @Param('category') category: string,
+  ): Promise<Business[]> {
+    return await this.businessService.getBusinessByCategory(category);
+  }
+
   @Patch('user/:id')
+  // @Type([userType.Business])
   @UseGuards(UserAuthGuard)
-  @ApiOperation({ summary: 'update business by user' })
+  @ApiOperation({ summary: 'update business' })
   async updateBusiness(
     @Param('id') id: string,
     @Body() updateBusinessDto: UpdateBusinessDto,
@@ -80,8 +97,26 @@ export class BusinessController {
     );
   }
 
+  //schedule must have an id
+  @Patch('schedule/:id')
+  // @Type([userType.Business])
+  @UseGuards(UserAuthGuard)
+  @ApiOperation({ summary: 'update business schedules' })
+  async updateBusinessSchedules(
+    @Param('id') id: string,
+    @Request() req,
+    @Body() updateSchedules: UpdateSchedules,
+  ): Promise<Business> {
+    const user: User = req.user;
+    return await this.businessService.updateBusinessSchedules(
+      id,
+      user,
+      updateSchedules,
+    );
+  }
+
   @Delete(':id')
-  @Type([userType.SUPER_ADMIN, userType.ADMIN, userType.CUSTOMER_SERVICE])
+  @Type([userType.SuperAdmin, userType.Admin, userType.CustomerService])
   @UseGuards(UserAuthGuard, TypeGuard)
   @ApiOperation({ summary: 'delete business account' })
   async deleteBusiness(@Param('id') id: string) {
@@ -89,7 +124,7 @@ export class BusinessController {
   }
 
   @Patch('toggle/:id')
-  @Type([userType.SUPER_ADMIN, userType.ADMIN, userType.CUSTOMER_SERVICE])
+  @Type([userType.SuperAdmin, userType.Admin, userType.CustomerService])
   @UseGuards(UserAuthGuard, TypeGuard)
   @ApiOperation({ summary: 'toggle business activation' })
   async deactivateBusiness(@Param('id') id: string): Promise<Business> {

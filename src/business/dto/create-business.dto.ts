@@ -1,5 +1,12 @@
-import { IsString, IsEmail, IsNotEmpty } from 'class-validator';
-import { ApiProperty } from '@nestjs/swagger';
+import {
+  IsString,
+  IsEmail,
+  IsNotEmpty,
+  IsArray,
+  IsOptional,
+} from 'class-validator';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { Category } from '../../shared/schema/category';
 
 export class CreateBusinessDto {
   @IsString()
@@ -26,4 +33,13 @@ export class CreateBusinessDto {
   @IsNotEmpty()
   @ApiProperty()
   region: string;
+
+  @IsArray()
+  @IsOptional()
+  // @ApiPropertyOptional({
+  //   isArray: true,
+  //   type: Category,
+  // })
+  @ApiPropertyOptional()
+  categories?: string[];
 }

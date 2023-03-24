@@ -1,8 +1,13 @@
-import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
-import { Reflector } from '@nestjs/core';
 import { App } from '../shared/schema/app';
 import { Model } from 'mongoose';
+import { Reflector } from '@nestjs/core';
 import { InjectModel } from '@nestjs/mongoose';
+import {
+  Injectable,
+  CanActivate,
+  ExecutionContext,
+  UnauthorizedException,
+} from '@nestjs/common';
 
 @Injectable()
 export class AppGuard implements CanActivate {
@@ -12,18 +17,21 @@ export class AppGuard implements CanActivate {
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<any> {
-    const request = context.switchToHttp().getRequest();
-    const appToken = request.headers['x-authorization'];
-    if (!appToken) {
-      return false;
+    try {
+      const request = context.switchToHttp().getRequest();
+      const appToken = request.headers['x-authorization'];
+      if (!appToken) {
+        return false;
+      }
+      const app = await this.appModel.findOne({ apiKey: appToken });
+
+      if (!app) {
+        return false;
+      }
+      request.app = app;
+      return app.active === true && app.apiKey === appToken;
+    } catch (err) {
+      throw new UnauthorizedException();
     }
-    const app = await this.appModel.findOne({
-      where: { apiKey: appToken },
-    });
-    if (!app) {
-      return false;
-    }
-    request.app = app;
-    return app.active === true && app.apiKey === appToken;
   }
 }

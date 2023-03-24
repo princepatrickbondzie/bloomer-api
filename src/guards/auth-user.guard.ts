@@ -40,7 +40,7 @@ export class UserAuthGuard extends AuthGuard('jwt') {
       request.user = user;
       return true;
     } catch (err) {
-      console.log(err)
+      console.log(err);
       throw new UnauthorizedException();
     }
   }

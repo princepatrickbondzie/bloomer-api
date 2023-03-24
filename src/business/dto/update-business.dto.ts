@@ -1,6 +1,6 @@
 import { PartialType } from '@nestjs/swagger';
 import { CreateBusinessDto } from './create-business.dto';
-import { IsString, IsEmail, IsOptional } from 'class-validator';
+import { IsString, IsEmail, IsOptional, IsArray } from 'class-validator';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 
 export class UpdateBusinessDto extends PartialType(CreateBusinessDto) {
@@ -28,4 +28,9 @@ export class UpdateBusinessDto extends PartialType(CreateBusinessDto) {
   @IsOptional()
   @ApiPropertyOptional()
   readonly region: string;
+
+  @IsArray()
+  @IsOptional()
+  @ApiPropertyOptional()
+  readonly categories?: string[];
 }

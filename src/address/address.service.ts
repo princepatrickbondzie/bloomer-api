@@ -38,16 +38,12 @@ export class AddressService {
   }
 
   async getAllUserAddress(user: User): Promise<Address[]> {
-    return await this.addressModel.findOne({ user }).populate({ path: 'user' });
+    return await this.addressModel.find({ user });
   }
 
   async getSingleUserAddress(id: string, user: User): Promise<Address> {
-    return await this.addressModel
-      .findOne({ id, user })
-      .populate({ path: 'user' });
+    return await this.addressModel.findOne({ _id: id, user });
   }
-
-  // async getShopAddress() {}
 
   async updateUserAddress(
     id: string,

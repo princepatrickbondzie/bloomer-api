@@ -4,6 +4,13 @@ import * as mongoose from 'mongoose';
 import { User } from './user';
 import { Service } from './service';
 import { Appointment } from './appointment';
+import { Category } from './category';
+import { Address } from './address';
+
+export class Schedules {
+  date: Date;
+  hours: string[];
+}
 
 @Schema({ timestamps: true })
 export class Business extends Document {
@@ -28,15 +35,31 @@ export class Business extends Document {
   @Prop({ type: mongoose.Schema.Types.Boolean, default: false })
   approved: boolean;
 
-  //others
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true })
-  user: User;
+  //settings
+  @Prop({
+    type: [{ type: Object }],
+    default: [],
+  })
+  schedules?: Schedules[];
 
   @Prop({
     type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Service' }],
     default: [],
   })
   services?: Service[];
+
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Address' })
+  address?: Address;
+
+  //referrences
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true })
+  user: User;
+
+  @Prop({
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Category' }],
+    default: [],
+  })
+  categories?: Category[];
 
   @Prop({
     type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Appointment' }],

@@ -1,8 +1,23 @@
 export enum userType {
-  ADMIN = 'admin',
-  CLIENT = 'client',
-  SUPER_ADMIN = 'super_admin',
-  CUSTOMER_SERVICE = 'customer_service',
+  Admin = 'admin',
+  Client = 'client',
+  Business = 'business',
+  SuperAdmin = 'super_admin',
+  CustomerService = 'customerservice',
+}
+
+export enum appointmentTypes {
+  InPerson = 'inperson',
+  Visit = 'visit',
+}
+
+export enum appointmentStatus {
+  NotDue = 'notDue',
+  Pending = 'pending',
+  Cancelled = 'cancelled',
+  Confirmed = 'confirmed',
+  Completed = 'completed',
+  AwaitingPayment = 'awaitingPayment',
 }
 
 export type Response = {

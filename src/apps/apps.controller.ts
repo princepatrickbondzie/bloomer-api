@@ -15,14 +15,14 @@ import {
   ApiParam,
   ApiOperation,
 } from '@nestjs/swagger';
-import { userType } from 'src/shared/utility/types';
+import { userType } from '../shared/utility/types';
 import { App } from '../shared/schema/app';
 import { CreateAppDto } from './dtos/create-app.dto';
 import { UpdateAppDto } from './dtos/update-app.dto';
 import { AppsService } from './apps.service';
 import { UserAuthGuard } from '../guards/auth-user.guard';
 import { Type } from '../shared/utility/methods';
-import { TypeGuard } from 'src/guards/type.guard';
+import { TypeGuard } from '../guards/type.guard';
 
 @Controller('apps')
 @ApiTags('Apps')
@@ -31,7 +31,7 @@ export class AppsController {
   constructor(private readonly appsService: AppsService) {}
 
   @Post()
-  @Type([userType.SUPER_ADMIN])
+  @Type([userType.SuperAdmin])
   @UseGuards(UserAuthGuard, TypeGuard)
   @ApiOperation({
     summary: 'Create a third party application',
@@ -41,7 +41,7 @@ export class AppsController {
   }
 
   @Get()
-  @Type([userType.SUPER_ADMIN])
+  @Type([userType.SuperAdmin])
   @UseGuards(UserAuthGuard, TypeGuard)
   @ApiOperation({
     summary: 'Get all registered third party applications',
@@ -51,7 +51,7 @@ export class AppsController {
   }
 
   @Patch('toggle/:id')
-  @Type([userType.SUPER_ADMIN])
+  @Type([userType.SuperAdmin])
   @UseGuards(UserAuthGuard, TypeGuard)
   @ApiOperation({
     summary: 'Deactive a single third party application',
@@ -61,7 +61,7 @@ export class AppsController {
   }
 
   @Patch(':id')
-  @Type([userType.SUPER_ADMIN])
+  @Type([userType.SuperAdmin])
   @UseGuards(UserAuthGuard, TypeGuard)
   @ApiParam({ name: 'id', required: true })
   @ApiOperation({

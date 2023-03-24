@@ -12,7 +12,7 @@ export class UserService {
   ) {}
 
   async getOnlyUsers(): Promise<User[]> {
-    return await this.userModel.find({ type: userType.CLIENT });
+    return await this.userModel.find({ type: userType.Client });
   }
 
   async getEveryUserType(): Promise<User[]> {
