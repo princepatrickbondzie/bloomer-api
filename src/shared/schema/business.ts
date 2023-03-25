@@ -12,6 +12,14 @@ export class Schedules {
   hours: string[];
 }
 
+export class PrimaryImage {
+  publicId: string;
+  folder: string;
+  url: string;
+  format: string;
+  createdAt: string;
+}
+
 @Schema({ timestamps: true })
 export class Business extends Document {
   @Prop({ type: mongoose.Schema.Types.String, unique: true, required: true })
@@ -22,6 +30,12 @@ export class Business extends Document {
 
   @Prop({ type: mongoose.Schema.Types.String, unique: true, required: true })
   contact: string;
+
+  @Prop({ type: PrimaryImage, required: true })
+  primaryImage: PrimaryImage;
+
+  @Prop({ type: [{ type: Object }], default: [] })
+  otherImages: PrimaryImage[];
 
   @Prop({ type: mongoose.Schema.Types.String, required: true })
   city: string;

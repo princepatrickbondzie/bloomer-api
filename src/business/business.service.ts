@@ -26,7 +26,7 @@ export class BusinessService {
       if (exist)
         throw new BadRequestException('Business email already registered.');
 
-      //not working need a better fix
+      //not working, need a better fix
       // let cts = [];
       // for (const c of categories) {
       //   cts.push(new Types.ObjectId(c));

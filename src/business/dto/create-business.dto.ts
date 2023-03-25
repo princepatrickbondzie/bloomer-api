@@ -7,6 +7,7 @@ import {
 } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Category } from '../../shared/schema/category';
+import { PrimaryImage } from '../../shared/schema/business';
 
 export class CreateBusinessDto {
   @IsString()
@@ -23,6 +24,18 @@ export class CreateBusinessDto {
   @IsNotEmpty()
   @ApiProperty()
   contact: string;
+
+  @IsNotEmpty()
+  @ApiProperty()
+  primaryImage: PrimaryImage;
+
+  @IsArray()
+  @IsOptional()
+  @ApiPropertyOptional({
+    isArray: true,
+    type: PrimaryImage,
+  })
+  otherImages?: PrimaryImage[];
 
   @IsString()
   @IsNotEmpty()
